@@ -1,0 +1,140 @@
+package com.qait.automation.keywords;                                                                                                 
+                                                                                                                                      
+import java.net.MalformedURLException;                                                                                                
+import java.util.Random;                                                                                                              
+                                                                                                                                      
+import org.apache.commons.lang3.StringUtils;                                                                                          
+import org.openqa.selenium.By;                                                                                                        
+import org.openqa.selenium.WebDriver;                                                                                                 
+import org.openqa.selenium.support.ui.Select;                                                                                         
+import static com.cengage.stepdefs.BaseTest.test;                                                                                     
+                                                                                                                                      
+import com.qait.automation.getpageobjects.GetPage;                                                                                    
+import com.qait.automation.utils.SeleniumWait;                                                                                        
+                                                                                                                                      
+public class CheckMyWorkCountActions extends GetPage {                                                                                
+                                                                                                                                      
+	private By question1 = By.xpath("//select [contains(@name,'_1')]");                                                               
+	private By frameid = By.id("easyXDM_activityService_target_provider");                                                            
+	private By checkmywork = By.xpath("//button[contains(@accesskey,'c')]");                                                          
+	private By remainingAttempts = By.xpath("//span[contains(@class,'remainingItemAttempts')]");                                      
+	private By tab2 = By.xpath("//li[contains(@class,'itemSelector label items1_2')]");                                               
+	private By regenerate = By.xpath("//a[contains(@class,'assignment-button regenerate-item')]");                                    
+                                                                                                                                      
+	public CheckMyWorkCountActions(WebDriver driver) throws MalformedURLException {                                                   
+		super("checkMyWorkCountObj", driver);                                                                                         
+	}                                                                                                                                 
+                                                                                                                                      
+	public void attempt_First_Question() {                                                                                            
+		switchToDefaultContent();                                                                                                     
+		driver.switchTo().frame(driver.findElement(frameid));                                                                         
+		driver.findElement(question1).click();                                                                                        
+                                                                                                                                      
+		Select selectinquestion1 = new Select(driver.findElement(question1));                                                         
+		selectinquestion1.selectByIndex(2);                                                                                           
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public int getting_Number_Of_Attempts_After_Click() throws InterruptedException {                                                 
+		test.common.switchToContentFrame();                                                                                           
+		wait.waitForFrameToBeAvailableAndSwitchToIt(frameid);                                                                         
+		wait.hardWait(3);                                                                                                             
+		String reaminingAttemptsText = driver.findElement(remainingAttempts).getText();                                               
+		String splittedarr[] = reaminingAttemptsText.split("\\s+");                                                                   
+		return Integer.parseInt(splittedarr[0]);                                                                                      
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public void attemptFirstQuestionFourTimes() {                                                                                     
+		switchToDefaultContent();                                                                                                     
+		driver.switchTo().frame(driver.findElement(frameid));                                                                         
+                                                                                                                                      
+		for (int i = 1; i <= 4; i++) {                                                                                                
+                                                                                                                                      
+			Select selectinquestion1 = new Select(driver.findElement(question1));                                                     
+			selectinquestion1.selectByIndex(i);                                                                                       
+			click_CheckMyWork();                                                                                                      
+		}                                                                                                                             
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public void click_CheckMyWork()                                                                                                   
+                                                                                                                                      
+	{                                                                                                                                 
+		driver.findElement(checkmywork).click();                                                                                      
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public int getting_No_Of_Attempts() {                                                                                             
+		wait.hardWait(3);                                                                                                             
+		String reaminingAttemptsText = driver.findElement(remainingAttempts).getText();                                               
+		String splittedarr[] = reaminingAttemptsText.split("\\s+");                                                                   
+		return Integer.parseInt(splittedarr[0]);                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public void resume_Using_Takeid() {                                                                                               
+		String takeid = test.common.getTakeID();                                                                                      
+		test.common.resumeWithTakeId(takeid);                                                                                         
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public void click_On_Review() {                                                                                                   
+		test.common.switchToDefaultContent();                                                                                         
+		driver.findElement(By.xpath("//a[contains(@class,'review-button')]")).click();                                                
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public void select_Tab2() {                                                                                                       
+		driver.findElement(tab2).click();                                                                                             
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public void click_On_Regenerate() {                                                                                               
+		test.common.switchToDefaultContent();                                                                                         
+		driver.findElement(regenerate).click();                                                                                       
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+	public int getCheckMyWorkFromActivityStatus() {                                                                                   
+		wait.waitForElementToBeVisible(driver.findElement(By.xpath("//div[contains(@class,'activity')]")));                           
+		String temp = driver.findElement(By.xpath("//div[contains(@class,'activity')]")).getText().trim();                            
+		String temp1;                                                                                                                 
+		temp1 = StringUtils.substringAfter(temp, "checkMyWorkAttempts");                                                              
+		temp1 = temp1.replaceAll(":", "");                                                                                            
+		temp1 = StringUtils.remove(temp1, '"');                                                                                       
+		temp = StringUtils.substringBefore(temp1, ",").trim();                                                                        
+		System.out.println("***************checkmyworkattempts*****************" + temp);                                             
+		return Integer.parseInt(temp);                                                                                                
+	}                                                                                                                                 
+                                                                                                                                      
+	public void click_On_Showscores() {                                                                                               
+		test.common.switchToDefaultContent();                                                                                         
+		test.common.clickShowScoresButton();                                                                                          
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+//	public void attemptFirstQuestionFiveTimes() {                                                                                     
+//		Random random = new Random();                                                                                                 
+//		switchToDefaultContent();                                                                                                     
+//		                                                                                                                              
+//		driver.switchTo().frame(driver.findElement(frameid));                                                                         
+//                                                                                                                                    
+//		for (int i = 1; i <= 5; i++) {                                                                                                
+//                                                                                                                                    
+//			Select selectinquestion1 = new Select(driver.findElement(question1));                                                     
+//			                                                                                                                          
+//			selectinquestion1.selectByIndex(random.nextInt(4));                                                                       
+//			click_CheckMyWork();                                                                                                      
+//		}                                                                                                                             
+//                                                                                                                                    
+//	}                                                                                                                                 
+                                                                                                                                      
+	public boolean is_CheckMyWork_Enabled() {                                                                                         
+		wait.waitForFrameToBeAvailableAndSwitchToIt(frameid);                                                                         
+		wait.hardWait(3);                                                                                                             
+        return driver.findElement(checkmywork).isEnabled();                                                                           
+                                                                                                                                      
+	}                                                                                                                                 
+                                                                                                                                      
+}                                                                                                                                     
+                                                                                                                                      
