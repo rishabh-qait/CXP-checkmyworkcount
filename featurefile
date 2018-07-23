@@ -1,0 +1,105 @@
+# CXP-checkmyworkcount
+Feature: CheckMyWork Count 
+@Smoke
+Scenario Outline: Validate that the number of checkmywork attempts reduces after one take 
+Given CXP Activity Service is up and running 
+When I load the activity on Activity Service from Geyser with <problemType> and <assetName>
+And I load the setting with <settings_URI>
+And I attempt the first question of CheckMyWork 
+And I click on checkmywork
+Then checkmywork count will be reduced by one
+
+Examples:
+    |  problemType    | assetName     																						|    settings_URI     |
+    |  html5     | https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.xml      	|    https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.prop |
+
+
+@Smoke
+Scenario Outline: Validate that on resume activity starts with same number of checkmyworkattempts where left 
+Given CXP Activity Service is up and running 
+When I load the activity on Activity Service from Geyser with <problemType> and <assetName>
+And I load the setting with <settings_URI>
+And I attempt the first question of CheckMyWork 
+And I click on checkmywork
+And I resume checkmywork activity using takeid
+Then checkmywork count must be the same where left
+
+Examples:
+    |  problemType    | assetName     																		    |    settings_URI                                                                            |
+    |  html5     | https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.xml      	|    https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.prop |
+
+@Smoke
+Scenario Outline: Validate that on review same number of checkmywork attempts viewed that taken in the activity
+Given CXP Activity Service is up and running 
+When I load the activity on Activity Service from Geyser with <problemType> and <assetName>
+And I load the setting with <settings_URI>
+And I attempt the first question of CheckMyWork
+And I click on checkmywork
+And I click on review button
+Then checkmywork count must be the same that taken in activity
+ 
+ Examples:
+    |  problemType    | assetName     																						|    settings_URI     |
+    |  html5     | https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.xml      	|    https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.prop |
+ 
+@Smoke
+Scenario Outline: Validate that on regenerate it again shows up the maximum number of attempts
+Given CXP Activity Service is up and running 
+When I load the activity on Activity Service from Geyser with <problemType> and <assetName>
+And I load the setting with <settings_URI> 
+And I attempt the first question four time and use check my work each time
+And I click on regenerate button
+Then checkmywork must be reininitialed to its maximum value 
+
+Examples:
+    |  problemType    | assetName     																						|    settings_URI     |
+    |  html5     | https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.xml      	|    https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.prop |
+
+
+
+@Smoke
+Scenario Outline: Validate that the  same number of check my work attempts displayed on the show scores as that of the number of  check my attempts taken in activity 
+Given CXP Activity Service is up and running 
+When I load the activity on Activity Service from Geyser with <problemType> and <assetName>
+And I load the setting with <settings_URI>
+And I attempt the first question four time and use check my work each time
+And I click on show scores
+Then checkmywork count must be same of that taken in activity
+
+Examples:
+    |  problemType    | assetName     																						|    settings_URI     |
+    |  html5     | https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.xml      	|    https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.prop |
+
+@Smoke
+Scenario Outline: Validate that when check my work count reduces to zero and when regenerate button clicked , it enables the checkmywork button
+Given CXP Activity Service is up and running 
+When I load the activity on Activity Service from Geyser with <problemType> and <assetName>
+And I load the setting with <settings_URI>
+And I attempt the first question four time and use check my work each time
+And I attempt the first question of CheckMyWork
+And I click on checkmywork
+And I click on regenerate button
+Then checkmywork button must be enabled again
+
+Examples:
+    |  problemType    | assetName     																						|    settings_URI     |
+    |  html5     | https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.xml      	|    https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.prop |
+
+
+Scenario Outline: Validate that when check my work count reduces to zero and when regenerate button clicked , it enables the checkmywork button
+Given CXP Activity Service is up and running 
+When I load the activity on Activity Service from Geyser with <problemType> and <assetName>
+And I load the setting with <settings_URI>
+And I attempt the first question four time and use check my work each time
+And I click on next button
+And I attempt the first question four time and use check my work each time
+And I click on next button
+And I attempt the first question four time and use check my work each time
+And I click on Completed button
+Then Each tab must have the correct information regarding the number of checkmywork attempts used 
+
+Examples:
+    |  problemType    | assetName     																						|    settings_URI     |
+    |  html5     | https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.xml      	|    https://preprod.geyser.cl-cms.com/assets/cxp_reference/problemtype/html5/cxp-15432.prop |
+
+
