@@ -1,0 +1,123 @@
+package com.cengage.stepdefs;
+
+import com.qait.automation.API.ActivityService_API;
+import com.qait.automation.utils.YamlReader;
+import com.thoughtworks.selenium.Wait;
+
+import cucumber.api.PendingException;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
+import static com.cengage.stepdefs.BaseTest.test;
+
+import java.io.IOException;
+
+import org.junit.Assert;
+
+public class CheckMyWorkCount_Test {
+
+	ActivityService_API aspAPI = new ActivityService_API();
+	String problemType;
+	String assetName;
+	private String takeId;
+	static String settings;
+	static String activityURL;
+	//static String baseURL = YamlReader.getYamlValue("BaseURL");
+	static String baseURL="https://s-cxp.cengage.com/activityservice";
+	@When("I attempt the first question of CheckMyWork")
+	public void attempt_First_Question_Of_CheckMyWork()
+	{
+		test.checkMyWorkCountObj.attempt_First_Question();
+		
+	}
+
+	@When("^I click on checkmywork$")
+	public void i_click_on_checkmywork() throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		test.checkMyWorkCountObj.click_CheckMyWork();
+		
+	}
+
+	@Then("^checkmywork count will be reduced by one$")
+	public void checkmywork_count_will_be_reduced_by_One() throws Throwable {
+		// Write code here that turns the phrase above into concrete actions
+		Assert.assertEquals(4, test.checkMyWorkCountObj.getting_No_Of_Attempts());
+	}
+
+	@When("^I resume checkmywork activity using takeid$")
+	public void resume_Checkmywork_Activity_Using_Takeid() throws IOException {
+		takeId=test.common.getTakeID();
+		String URI=test.activityAPI.resumeActivity(takeId);
+		test.common.resumeActivityWithURI(URI);
+	}
+
+	@Then("^checkmywork count must be the same where left$")
+	public void checkmywork_Count_Must_Be_Same_Where_Left() throws InterruptedException {
+
+		Assert.assertEquals(4, test.checkMyWorkCountObj.getting_Number_Of_Attempts_After_Click());
+	}
+
+	@When("^I click on review button$")
+	public void click_On_Review() {
+		test.checkMyWorkCountObj.click_On_Review();
+
+	}
+
+	@Then("^checkmywork count must be the same that taken in activity$")
+	public void checkmywork_Count_Must_Be_Same_Taken_In_Activity() throws InterruptedException {
+		Assert.assertEquals(1, test.checkMyWorkCountObj.getting_Number_Of_Attempts_After_Click());
+
+	}
+
+	@When("^I attempt the first question four time and use check my work each time$")
+	public void attempt_First_Question_Four_Time_And_Use_Check_My_Work_Each_Time() {
+		test.checkMyWorkCountObj.attemptFirstQuestionFourTimes();
+
+	}
+
+	@When("^I click on regenerate button$")
+	public void click_On_Regenerate_Button() {
+		test.checkMyWorkCountObj.click_On_Regenerate();
+
+	}
+
+	@Then("^checkmywork must be reininitialed to its maximum value$")
+	public void checkmywork_Must_Be_Reininitialed_To_Its_Maximum_Value() throws InterruptedException {
+		Assert.assertEquals(5, test.checkMyWorkCountObj.getting_Number_Of_Attempts_After_Click());
+
+	}
+
+	@When("^I click on show scores$")
+	public void click_On_Show_Scores() {
+		test.checkMyWorkCountObj.click_On_Showscores();
+
+	}
+
+	@Then("^checkmywork count must be same of that taken in activity$")
+	public void checkmywork_Count_Must_Be_SameOf_That_Taken_In_Activity() {
+		Assert.assertEquals(4, test.checkMyWorkCountObj.getCheckMyWorkFromActivityStatus());
+
+	}
+
+//	@When("^I attempt the first question five times and use check my work each time$")
+//	public void attempt_first_Question_Five_Times_And_Use_Check_My_Work_Each_Time() {
+//		test.checkMyWorkCountObj.attempt_First_Question();
+//		test.checkMyWorkCountObj.attemptFirstQuestionFourTimes();
+//		
+//
+//	}
+
+	@Then("^checkmywork button must be enabled again$")
+	public void checkmywork_Button_Must_Be_Enabled_Again() {
+		Assert.assertEquals(true, test.checkMyWorkCountObj.is_CheckMyWork_Enabled());
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+}
